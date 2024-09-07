@@ -30,6 +30,7 @@ class EmployeeController extends Controller
     public function store(StoreEmployeeRequest $request)
     {
         $employee = Employee::create($request->validated());
+        
         session()->flash('success', 'Employee created successfully');
         return back();
     }
