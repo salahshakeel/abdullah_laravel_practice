@@ -13,7 +13,11 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
+        $employees = Employee::latest()->paginate(10);
+   
+        return view('Employee.Index',[
+            'employees' => $employees
+        ]);
     }
 
     /**
@@ -29,8 +33,7 @@ class EmployeeController extends Controller
      */
     public function store(StoreEmployeeRequest $request)
     {
-        $employee = Employee::create($request->validated());
-        
+        Employee::create($request->validated());
         session()->flash('success', 'Employee created successfully');
         return back();
     }
@@ -48,7 +51,9 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
-        //
+        return view('Employee.Edit', [
+            'employee' => $employee
+        ]);
     }
 
     /**
@@ -56,7 +61,9 @@ class EmployeeController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-        //
+        $employee->update($request->validated());
+        session()->flash('success', 'Employee updated successfully');
+        return redirect()->route('employees.index');
     }
 
     /**
@@ -64,6 +71,7 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        //
+        $employee->delete();
+        return back();
     }
 }
